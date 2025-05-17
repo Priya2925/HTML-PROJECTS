@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Simple Shopping Website</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap');
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Rubik', sans-serif;
+    background: #f5f7fa;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  header {
+    background: #4A90E2;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 0.1);
+  }
+
+  header h1 {
+    font-weight: 500;
+    font-size: 1.5rem;
+  }
+
+  .cart-button {
+    position: relative;
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.3rem;
+  }
+
+  .cart-count {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: #ff4757;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: white;
+  }
+
+  main {
+    flex-grow: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap: 1.5rem;
+  }
+
+  .product-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgb(0 0 0 / 0.06);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease-in-out;
+  }
+  .product-card:hover {
+    box-shadow: 0 10px 18px rgb(0 0 0 / 0.12);
+  }
+
+  .product-image {
+    width: 100%;
+    object-fit: cover;
+    aspect-ratio: 4/3;
+    border-bottom: 1px solid #e1e1e1;
+  }
+
+  .product-info {
+    padding: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .product-name {
+    font-weight: 500;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: #222;
+  }
+
+  .product-price {
+    font-weight: 600;
+    color: #4A90E2;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+  }
+
+  .button-add {
+    background: #4A90E2;
+    border: none;
+    padding: 0.6rem 0;
+    border-radius: 5px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .button-add:hover {
+    background: #3a78c2;
+  }
+
+  /* Cart sidebar styles */
+  .cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 360px;
+    height: 100vh;
+    background: white;
+    box-shadow: -4px 0 12px rgb(0 0 0 / 0.15);
+    transition: right 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    z-index: 200;
+  }
+
+  .cart-sidebar.open {
+    right: 0;
+  }
+
+  .cart-header {
+    background: #4A90E2;
+    color: white;
+    padding: 1.5rem 1.5rem;
+    font-weight: 600;
+    font-size: 1.3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cart-close {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.4rem;
+    cursor: pointer;
+  }
+
+  .cart-items {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1rem 1.5rem;
+  }
+
+  .cart-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+  }
+
+  .cart-item-image {
+    width: 64px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 1rem;
+  }
+
+  .cart-item-info {
+    flex-grow: 1;
+  }
+
+  .cart-item-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .cart-item-price {
+    color: #4A90E2;
+    font-weight: 600;
+    margin-top: 0.25rem;
+    font-size: 0.9rem;
+  }
+
+  .cart-item-quantity {
+    margin-top: 0.3rem;
+    font-size: 0.85rem;
+    color: #555;
+  }
+
+  .cart-item-remove {
+    background: transparent;
+    border: none;
+    color: #ff4757;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1.1rem;
+  }
+
+  .cart-footer {
+    border-top: 1px solid #ddd;
+    padding: 1rem 1.5rem;
+    font-weight: 700;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    color: #222;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 480px) {
+    .cart-sidebar {
+      width: 100vw;
+    }
+    main {
+      padding: 1rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ShopEasy</h1>
+  <button aria-label="Cart" class="cart-button" id="cartButton">
+    🛒 Cart <span class="cart-count" id="cartCount">0</span>
+  </button>
+</header>
+
+<main>
+  <section class="products-grid" id="productsGrid">
+    <!-- Products will be populated here by JavaScript -->
+  </section>
+</main>
+
+<aside class="cart-sidebar" id="cartSidebar" aria-label="Shopping cart">
+  <div class="cart-header">
+    <span>Your Cart</span>
+    <button aria-label="Close cart" class="cart-close" id="closeCartBtn">&times;</button>
+  </div>
+  <div class="cart-items" id="cartItemsContainer">
+    <!-- Cart items populated here -->
+  </div>
+  <div class="cart-footer">
+    <span>Total:</span>
+    <span id="cartTotalPrice">$0.00</span>
+  </div>
+</aside>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+
+    const products = [
+      {
+        id: 1,
+        name: "Stylish Sneakers",
+        price: 59.99,
+        image: "https://images.unsplash.com/photo-1519741490705-27f9f70a88c8?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        id: 2,
+        name: "Classic Wristwatch",
+        price: 120.0,
+        image: "https://images.unsplash.com/photo-1517502166878-35c93a0072bb?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        id: 3,
+        name: "Leather Backpack",
+        price: 89.5,
+        image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        id: 4,
+        name: "Wireless Headphones",
+        price: 150.25,
+        image: "https://images.unsplash.com/photo-1494245289078-1a14627216cc?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        id: 5,
+        name: "Sunglasses",
+        price: 45.0,
+        image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        id: 6,
+        name: "Casual T-shirt",
+        price: 25.75,
+        image: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80"
+      }
+    ];
+
+    // DOM references
+    const productsGrid = document.getElementById('productsGrid');
+    const cartButton = document.getElementById('cartButton');
+    const cartSidebar = document.getElementById('cartSidebar');
+    const closeCartBtn = document.getElementById('closeCartBtn');
+    const cartCount = document.getElementById('cartCount');
+    const cartItemsContainer = document.getElementById('cartItemsContainer');
+    const cartTotalPrice = document.getElementById('cartTotalPrice');
+
+    // Cart data in format { productId: quantity }
+    let cart = {};
+
+    // Load cart from localStorage
+    function loadCart() {
+      const cartJSON = localStorage.getItem('shopEasyCart');
+      if (cartJSON) {
+        cart = JSON.parse(cartJSON);
+      } else {
+        cart = {};
+      }
+    }
+
+    // Save cart to localStorage
+    function saveCart() {
+      localStorage.setItem('shopEasyCart', JSON.stringify(cart));
+    }
+
+    // Render products grid
+    function renderProducts() {
+      productsGrid.innerHTML = '';
+      for (const product of products) {
+        const card = document.createElement('article');
+        card.className = 'product-card';
+
+        card.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" class="product-image" loading="lazy" />
+          <div class="product-info">
+            <h2 class="product-name">${product.name}</h2>
+            <div class="product-price">$${product.price.toFixed(2)}</div>
+            <button class="button-add" data-id="${product.id}">Add to Cart</button>
+          </div>
+        `;
+
+        productsGrid.appendChild(card);
+      }
+    }
+
+    // Render cart count badge
+    function renderCartCount() {
+      const totalQuantity = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+      cartCount.textContent = totalQuantity;
+      cartCount.style.display = totalQuantity > 0 ? 'inline-block' : 'none';
+    }
+
+    // Render cart sidebar list and total price
+    function renderCart() {
+      cartItemsContainer.innerHTML = '';
+      if (Object.keys(cart).length === 0) {
+        cartItemsContainer.innerHTML = '<p style="color:#666; font-style:italic;">Your cart is empty.</p>';
+        cartTotalPrice.textContent = '$0.00';
+        return;
+      }
+
+      let total = 0;
+
+      for (const productIdStr of Object.keys(cart)) {
+        const productId = parseInt(productIdStr);
+        const quantity = cart[productId];
+        const product = products.find(p => p.id === productId);
+        if (!product) continue;
+
+        total += product.price * quantity;
+
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'cart-item';
+
+        itemDiv.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" class="cart-item-image" />
+          <div class="cart-item-info">
+            <div class="cart-item-name">${product.name}</div>
+            <div class="cart-item-price">$${product.price.toFixed(2)}</div>
+            <div class="cart-item-quantity">Quantity: ${quantity}</div>
+          </div>
+          <button aria-label="Remove ${product.name} from cart" class="cart-item-remove" data-id="${product.id}">&times;</button>
+        `;
+
+        cartItemsContainer.appendChild(itemDiv);
+      }
+
+      cartTotalPrice.textContent = `$${total.toFixed(2)}`;
+    }
+
+    function addToCart(productId) {
+      if (cart[productId]) {
+        cart[productId]++;
+      } else {
+        cart[productId] = 1;
+      }
+      saveCart();
+      renderCartCount();
+      renderCart();
+    }
+
+    function removeFromCart(productId) {
+      if (cart[productId]) {
+        delete cart[productId];
+        saveCart();
+        renderCartCount();
+        renderCart();
+      }
+    }
+
+    // Event delegation for Add to Cart buttons
+    productsGrid.addEventListener('click', e => {
+      if (e.target.classList.contains('button-add')) {
+        const id = parseInt(e.target.dataset.id);
+        addToCart(id);
+        if (!cartSidebar.classList.contains('open')) {
+          openCart();
+        }
+      }
+    });
+
+    // Event delegation for Remove buttons in cart
+    cartItemsContainer.addEventListener('click', e => {
+      if (e.target.classList.contains('cart-item-remove')) {
+        const id = parseInt(e.target.dataset.id);
+        removeFromCart(id);
+      }
+    });
+
+    // Open cart sidebar
+    function openCart() {
+      cartSidebar.classList.add('open');
+    }
+
+    // Close cart sidebar
+    function closeCart() {
+      cartSidebar.classList.remove('open');
+    }
+
+    cartButton.addEventListener('click', () => {
+      if (cartSidebar.classList.contains('open')) {
+        closeCart();
+      } else {
+        openCart();
+      }
+    });
+
+    closeCartBtn.addEventListener('click', closeCart);
+
+    // Initialize
+    loadCart();
+    renderProducts();
+    renderCartCount();
+    renderCart();
+
+  });
+</script>
+</body>
+</html>
+

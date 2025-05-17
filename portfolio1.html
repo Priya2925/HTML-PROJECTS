@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Your Name - Portfolio</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap');
+
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0;
+    scroll-behavior: smooth;
+    font-family: 'Rubik', sans-serif;
+    background: #f0f2f5;
+    color: #222;
+  }
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #4A90E2;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 3rem;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.15);
+    z-index: 1000;
+  }
+  header h1 {
+    font-weight: 500;
+    font-size: 1.5rem;
+  }
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 2rem;
+    font-size: 1rem;
+    transition: color 0.3s;
+  }
+  nav a:hover {
+    color: #ffd700;
+  }
+  main {
+    padding: 6rem 2rem 4rem 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  section {
+    margin-bottom: 4rem;
+  }
+  section h2 {
+    font-size: 2rem;
+    color: #4A90E2;
+    margin-bottom: 1rem;
+    border-bottom: 3px solid #4A90E2;
+    display: inline-block;
+    padding-bottom: 0.3rem;
+  }
+  .about p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    max-width: 700px;
+  }
+  .skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    max-width: 700px;
+  }
+  .skill-item {
+    background: #4A90E2;
+    color: white;
+    padding: 0.6rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .projects-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+  }
+  .project-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgb(0 0 0 / 0.1);
+    display: flex;
+    flex-direction: column;
+  }
+  .project-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  .project-description {
+    flex-grow: 1;
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 1rem;
+  }
+  .project-links a {
+    text-decoration: none;
+    color: #4A90E2;
+    font-weight: 600;
+    margin-right: 1rem;
+    transition: color 0.3s;
+  }
+  .project-links a:hover {
+    color: #2d5da1;
+  }
+  .contact-info {
+    font-size: 1.1rem;
+  }
+  .contact-item {
+    margin-bottom: 0.75rem;
+  }
+  footer {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #777;
+    padding: 1rem;
+    border-top: 1px solid #ddd;
+  }
+  /* Responsive */
+  @media (max-width: 480px) {
+    nav a {
+      margin-left: 1rem;
+      font-size: 0.9rem;
+    }
+    main {
+      padding: 5rem 1rem 3rem 1rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Your Name</h1>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <section id="about" class="about">
+    <h2>About Me</h2>
+    <p>Hello! I'm <strong>NOMIKA PRIYA GUDI</strong>, a passionate web developer with experience in building modern, responsive web applications. I love turning ideas into reality using clean, efficient code and creative design. Welcome to my portfolio!</p>
+  </section>
+
+  <section id="skills" class="skills">
+    <h2>Skills</h2>
+    <div class="skills-list">
+      <div class="skill-item">HTML</div>
+      <div class="skill-item">CSS</div>
+      <div class="skill-item">JavaScript</div>
+      <div class="skill-item">JAVA</div>
+      <div class="skill-item">PHP</div>
+      <div class="skill-item">Machine Learning</div>
+      <div class="skill-item">Python</div>
+      <div class="skill-item">Power BI</div>
+      <div class="skill-item">RPA</div>
+    </div>
+  </section>
+
+  <section id="projects" class="projects">
+    <h2>Projects</h2>
+    <div class="projects-grid">
+      <article class="project-card">
+        <h3>Shopping Website</h3>
+        <p class="project-description">A modern responsive shopping website with product listings, cart functionality, and stylish UI.</p>
+        <div class="project-links">
+          <a href="https://codepen.io/yourusername/pen/shopping-site" target="_blank" rel="noopener noreferrer">Demo</a>
+          <a href="https://github.com/yourusername/shopping-website" target="_blank" rel="noopener noreferrer">Code</a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <h3>Portfolio Website</h3>
+        <p class="project-description">A personal portfolio showcasing projects, skills, and contact details with a clean design.</p>
+        <div class="project-links">
+          <a href="https://yourusername.github.io/portfolio" target="_blank" rel="noopener noreferrer">Demo</a>
+          <a href="https://github.com/yourusername/portfolio" target="_blank" rel="noopener noreferrer">Code</a>
+        </div>
+      </article>
+
+      <!-- Add more project cards as you like -->
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2>Contact</h2>
+    <div class="contact-info">
+      <div class="contact-item"><strong>Email:</strong> nomikapriya1@gmail.com</div>
+      <div class="contact-item"><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer">linkedin.com/in/yourusername</a></div>
+      <div class="contact-item"><strong>GitHub:</strong> <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer">github.com/yourusername</a></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  &copy; 2024 Your Name. All rights reserved.
+</footer>
+
+</body>
+</html>
